@@ -5,5 +5,11 @@ package com.dice10000.model;
  *
  */
 public class Dice10000 {
+    private HumanPlayer humanPlayer;
 
+    public Dice10000() {
+        humanPlayer = new HumanPlayer();
+        humanPlayer.throwDice();
+
+    }
 }

@@ -5,6 +5,6 @@ package com.dice10000.model;
  * 
  */
 interface Player {
-    public void throwDice();
+    public void throwDice(int numDice);
 
 }

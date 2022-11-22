@@ -9,7 +9,7 @@ public class Dice10000 {
 
     public Dice10000() {
         humanPlayer = new HumanPlayer();
-        humanPlayer.throwDice();
+        humanPlayer.throwDice(6);
 
     }
 }

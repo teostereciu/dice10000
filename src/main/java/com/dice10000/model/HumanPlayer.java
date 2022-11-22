@@ -4,8 +4,8 @@ public class HumanPlayer implements Player {
     private int score;
     private Throw curThrow;
 
-    public void throwDice() {
-        curThrow = new Throw(6);
+    public void throwDice(int numDice) {
+        curThrow = new Throw(numDice);
         System.out.println("Threw " + curThrow.getDiceList());
         // curThrow.setDiceFrequency();
     }

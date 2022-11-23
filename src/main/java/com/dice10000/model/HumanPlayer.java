@@ -16,20 +16,23 @@ public class HumanPlayer implements Player {
         int meldScore = 0;
         Scanner in = new Scanner(System.in);
         while (true) {
+            if (numDice == 0) {
+                numDice = 6;
+            }
             throwDice(numDice);
             int[] meldOutcome = chooseMeld();
             int meldValue = meldOutcome[0];
             int diceInMeld = meldOutcome[1];
 
-            if (meldValue != 0) {
-                System.out.println("Meld accepted! Your score increases by " + meldValue);
-                numDice -= diceInMeld;
-                meldScore += meldValue;
+            if (meldValue == -1) {
+                System.out.println("GHERLAAA.");
             } else if (meldValue == 0) {
                 System.out.println("Meld not accepted! You lose the points from this round!");
                 break;
             } else {
-                System.out.println("GHERLAAA.");
+                System.out.println("Meld accepted! Your score increases by " + meldValue);
+                numDice -= diceInMeld;
+                meldScore += meldValue;
             }
 
             System.out.println("Do you bank " + meldScore + " points or roll again? (bank/cont)");
@@ -78,9 +81,16 @@ public class HumanPlayer implements Player {
 
         for (Map.Entry<ArrayList<Integer>, Integer> entry : scoresMap.entrySet()) {
             ArrayList<Integer> key = entry.getKey();
-            if (meld.containsAll(key)) {
+            System.out.println("meld is " + meld);
+            System.out.println("entry is " + entry);
+            if (meld.containsAll(key) && meld.size() >= key.size()) {
                 meldValue += entry.getValue();
+                System.out.println("meldvalue is " + meldValue);
                 meld.removeAll(key);
+                System.out.println("meld after removal is " + meld);
+            }
+            if (meld.isEmpty()) {
+                break;
             }
         }
         int[] outcome = new int[] { meldValue, diceInMeld };

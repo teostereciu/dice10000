@@ -30,21 +30,26 @@ public class Throw {
         setScoresMap();
     }
 
-    private HashMap<Integer, Integer> diceFrequency = new HashMap<>();
+    private List<Integer> diceFrequency = new ArrayList<>();
 
     public void setDiceFrequency() {
         int occurrences;
+        diceFrequency.add(0, null);
         for (int i = 1; i < upperBound + 1; i++) {
             occurrences = Collections.frequency(diceList, i);
-            diceFrequency.put(i, occurrences);
+            diceFrequency.add(i, occurrences);
         }
-        System.out.println(diceFrequency); // todo rm
+        // System.out.println(diceFrequency); // todo rm
     }
 
-    private HashMap<List<Integer>, Integer> scoresMap = new HashMap<>();
+    private HashMap<ArrayList<Integer>, Integer> scoresMap = new HashMap<>();
+
+    public HashMap<ArrayList<Integer>, Integer> getScoresMap() {
+        return scoresMap;
+    }
 
     public void setScoresMap() {
-        List<Integer> combo = new ArrayList<>();
+        ArrayList<Integer> combo = new ArrayList<>();
         int scoreCombo = 0;
         boolean straightOneSix = true;
         for (int die = 1; die < upperBound + 1; die++) {
@@ -111,6 +116,7 @@ public class Throw {
                         scoreCombo = 2 * (50 + 50 * (die % 5)); // two 1 die -> 200p and two 5 die -> 100p
                         scoresMap.put(combo, scoreCombo);
                         combo = new ArrayList<>();
+                        ;
                         occurencesDie--;
                     }
                 case 1:
@@ -124,15 +130,15 @@ public class Throw {
                 case 0:
                     straightOneSix = false;
             }
-            if (numDice == 6 && straightOneSix) {
-                for (die = 1; die < upperBound + 1; die++)
-                    combo.add(die);
-                scoreCombo = 1500;
-                scoresMap.put(combo, scoreCombo);
-                combo = new ArrayList<>();
-            }
         }
-        System.out.println(scoresMap);
+        if (numDice == 6 && straightOneSix) {
+            for (int die = 1; die < upperBound + 1; die++)
+                combo.add(die);
+            scoreCombo = 1500;
+            scoresMap.put(combo, scoreCombo);
+            combo = new ArrayList<>();
+        }
+        // System.out.println(scoresMap);
     }
 
     public List<Integer> getDiceList() {

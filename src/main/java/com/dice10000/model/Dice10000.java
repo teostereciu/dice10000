@@ -6,10 +6,14 @@ package com.dice10000.model;
  */
 public class Dice10000 {
     private HumanPlayer humanPlayer;
+    private ComputerPlayer computerPlayer;
+    public static final int TOTAL_DICE = 6;
 
     public Dice10000() {
         humanPlayer = new HumanPlayer();
-        humanPlayer.throwDice(6);
-
+        computerPlayer = new ComputerPlayer();
+        // humanPlayer.throwDice(TOTAL_DICE);
+        // computerPlayer.throwDice(TOTAL_DICE);
+        humanPlayer.takeTurn();
     }
 }

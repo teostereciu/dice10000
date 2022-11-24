@@ -1,5 +1,8 @@
 package com.dice10000.model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,11 +13,26 @@ import java.util.regex.Pattern;
 public class HumanPlayer implements Player {
     private int score;
     private Throw curThrow;
+    // private Scanner in;
+
+    public boolean isHuman() {
+        return true;
+    }
+
+    /*
+     * public void startScanner() {
+     * in = new Scanner(System.in);
+     * }
+     * 
+     * public void closeScanner() {
+     * in.close();
+     * }
+     */
 
     public void takeTurn() {
         int numDice = 6;
         int meldScore = 0;
-        Scanner in = new Scanner(System.in);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
             if (numDice == 0) {
                 numDice = 6;
@@ -26,6 +44,7 @@ public class HumanPlayer implements Player {
 
             if (meldValue == -1) {
                 System.out.println("GHERLAAA.");
+                break;
             } else if (meldValue == 0) {
                 System.out.println("Meld not accepted! You lose the points from this round!");
                 break;
@@ -37,16 +56,28 @@ public class HumanPlayer implements Player {
 
             System.out.println("Do you bank " + meldScore + " points or roll again? (bank/cont)");
 
-            boolean bank = (in.nextLine().equals("bank"));
-            // in.close();
+            // String bankAns = "";
+            // while (in.hasNextLine() && bankAns.equals("")) {
+            // bankAns = in.nextLine();
+            // break;
+            // }
 
-            if (bank) {
+            String ans = "";
+            try {
+                ans = input.readLine();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                System.out.println("Problem in human decide to bank");
+                e.printStackTrace();
+            }
+
+            if (ans.equals("bank")) {
                 bankScore(meldScore);
                 System.out.println("You banked " + meldScore + " points. You now have " + score + ".");
                 break;
             }
         }
-        in.close();
+        // in.close();
     }
 
     public void throwDice(int numDice) {
@@ -54,7 +85,7 @@ public class HumanPlayer implements Player {
         System.out.println("You rolled " + curThrow.getDiceList());
     }
 
-    public int[] chooseMeld() {
+    private int[] chooseMeld() {
         int meldValue = 0;
         int diceInMeld = 0;
         System.out.println("The possible melds are:");
@@ -65,8 +96,20 @@ public class HumanPlayer implements Player {
             return outcome;
         }
         System.out.println("Which meld do you choose? Enter dice numbers.");
-        Scanner in = new Scanner(System.in);
-        String ans = in.nextLine();
+        // Scanner in = new Scanner(System.in);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String ans = "";
+        try {
+            ans = input.readLine();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            System.out.println("Problem with human choose meld");
+            e.printStackTrace();
+        }
+        // while (in.hasNextLine() && ans.equals("")) {
+        // ans = in.nextLine();
+        // break;
+        // }
         // in.close();
 
         ArrayList<Integer> meld = new ArrayList<>();
@@ -81,13 +124,13 @@ public class HumanPlayer implements Player {
 
         for (Map.Entry<ArrayList<Integer>, Integer> entry : scoresMap.entrySet()) {
             ArrayList<Integer> key = entry.getKey();
-            System.out.println("meld is " + meld);
-            System.out.println("entry is " + entry);
+            // System.out.println("meld is " + meld);
+            // System.out.println("entry is " + entry);
             if (meld.containsAll(key) && meld.size() >= key.size()) {
                 meldValue += entry.getValue();
-                System.out.println("meldvalue is " + meldValue);
+                // System.out.println("meldvalue is " + meldValue);
                 meld.removeAll(key);
-                System.out.println("meld after removal is " + meld);
+                // System.out.println("meld after removal is " + meld);
             }
             if (meld.isEmpty()) {
                 break;
@@ -107,5 +150,9 @@ public class HumanPlayer implements Player {
 
     public Throw getCurThrow() {
         return curThrow;
+    }
+
+    public boolean isWinner() {
+        return (score >= 10000);
     }
 }
